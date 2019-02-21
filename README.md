@@ -1,7 +1,16 @@
 # kafka-demo
 A simple producer / consumer demo using Kafka and Spring-Kafka
 
-## Useful Commands
+### Sample Request
+A sample REST request. POST this request to the dispatcher and it will be placed on a Kafka topic where the consumer will pick it up and print it to the log.
+
+`{
+	"guid":"12347",
+	"source": "some_source",
+	"body": "lorem ipsum lorem ipsum"
+}`
+
+### Useful Commands
 The following commands can be used to start/stop Kafka and administer it for this demo. 
 
 **Start ZooKeeper**  
