@@ -26,7 +26,7 @@ The following commands can be used to start/stop Kafka and administer it for thi
 `> bin/kafka-topics.sh --list --zookeeper localhost:2181`
 
 **Delete a topic**  
-`bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test`
+`> bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test`
 
 **Publish to a topic**  
 `> bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test`
