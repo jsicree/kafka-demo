@@ -9,13 +9,14 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kafkademo</groupId>
-	<artifactId>simple-consumer</artifactId>
+	<artifactId>simple-producer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>simple-producer</name>
+	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud-sleuth.version>2.1.0.RELEASE</spring-cloud-sleuth.version>
-		<spock.version>1.2-groovy-2.4</spock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -59,14 +60,14 @@
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-core</artifactId>
-			<version>${spock.version}</version>
+			<version>1.2-groovy-2.4</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-spring</artifactId>
-			<version>${spock.version}</version>
+			<version>1.2-groovy-2.4</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -84,16 +85,33 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-sleuth-zipkin -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compileTests</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
@@ -122,25 +140,8 @@
 					<clearOutputDir>false</clearOutputDir>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.gmavenplus</groupId>
-				<artifactId>gmavenplus-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compileTests</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-
 
 
 </project>
