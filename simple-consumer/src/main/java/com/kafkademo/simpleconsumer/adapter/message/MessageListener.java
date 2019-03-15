@@ -1,5 +1,6 @@
 package com.kafkademo.simpleconsumer.adapter.message;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +9,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import com.kafkademo.common.domain.Message;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kafkademo.simpleconsumer.domain.ConsumerMessage;
 import com.kafkademo.simpleconsumer.port.MessagePort;
 import com.kafkademo.simpleconsumer.service.ConsumerService;
 
@@ -36,8 +38,17 @@ public class MessageListener implements MessagePort {
 	}
 
     @KafkaListener(topics = "${kafka.topic}", groupId = "${kafka.groupId}", containerFactory = "kafkaListenerContainerFactory")
-    public void listen(@Payload Message message) {
-	    service.processMessage(message);
+    public void listen(@Payload String messageAsString) {
+    	
+    	ConsumerMessage message;
+		try {
+			message = (new ObjectMapper()).readValue(messageAsString, ConsumerMessage.class);
+		    service.processMessage(message);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
         latch.countDown();
     }
 	

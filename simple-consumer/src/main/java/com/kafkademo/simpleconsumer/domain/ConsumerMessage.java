@@ -1,27 +1,39 @@
-package com.kafkademo.simpleproducer.adapter.rest;
+package com.kafkademo.simpleconsumer.domain;
 
 import java.io.Serializable;
-
 import javax.annotation.Generated;
 
-public class DispatchRequest implements Serializable {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-	private static final long serialVersionUID = -1144137811934989571L;
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ConsumerMessage implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6768559111285193597L;
+	private String guid;
 	private String source;
 	private String body;
-	private String newField;
 
 	@Generated("SparkTools")
-	private DispatchRequest(Builder builder) {
+	private ConsumerMessage(Builder builder) {
+		this.guid = builder.guid;
 		this.source = builder.source;
 		this.body = builder.body;
-		this.newField = builder.newField;
 	}
 
-	public DispatchRequest() {
+	public ConsumerMessage() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	public String getSource() {
@@ -40,20 +52,12 @@ public class DispatchRequest implements Serializable {
 		this.body = body;
 	}
 
-	public String getNewField() {
-		return newField;
-	}
-
-	public void setNewField(String newField) {
-		this.newField = newField;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((body == null) ? 0 : body.hashCode());
-		result = prime * result + ((newField == null) ? 0 : newField.hashCode());
+		result = prime * result + ((guid == null) ? 0 : guid.hashCode());
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		return result;
 	}
@@ -66,16 +70,16 @@ public class DispatchRequest implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DispatchRequest other = (DispatchRequest) obj;
+		ConsumerMessage other = (ConsumerMessage) obj;
 		if (body == null) {
 			if (other.body != null)
 				return false;
 		} else if (!body.equals(other.body))
 			return false;
-		if (newField == null) {
-			if (other.newField != null)
+		if (guid == null) {
+			if (other.guid != null)
 				return false;
-		} else if (!newField.equals(other.newField))
+		} else if (!guid.equals(other.guid))
 			return false;
 		if (source == null) {
 			if (other.source != null)
@@ -88,18 +92,18 @@ public class DispatchRequest implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("DispatchRequest [source=");
+		builder.append("ConsumerMessage [guid=");
+		builder.append(guid);
+		builder.append(", source=");
 		builder.append(source);
 		builder.append(", body=");
 		builder.append(body);
-		builder.append(", newField=");
-		builder.append(newField);
 		builder.append("]");
 		return builder.toString();
 	}
 
 	/**
-	 * Creates builder to build {@link DispatchRequest}.
+	 * Creates builder to build {@link ConsumerMessage}.
 	 * @return created builder
 	 */
 	@Generated("SparkTools")
@@ -108,15 +112,20 @@ public class DispatchRequest implements Serializable {
 	}
 
 	/**
-	 * Builder to build {@link DispatchRequest}.
+	 * Builder to build {@link ConsumerMessage}.
 	 */
 	@Generated("SparkTools")
 	public static final class Builder {
+		private String guid;
 		private String source;
 		private String body;
-		private String newField;
 
 		private Builder() {
+		}
+
+		public Builder withGuid(String guid) {
+			this.guid = guid;
+			return this;
 		}
 
 		public Builder withSource(String source) {
@@ -129,16 +138,11 @@ public class DispatchRequest implements Serializable {
 			return this;
 		}
 
-		public Builder withNewField(String newField) {
-			this.newField = newField;
-			return this;
-		}
-
-		public DispatchRequest build() {
-			return new DispatchRequest(this);
+		public ConsumerMessage build() {
+			return new ConsumerMessage(this);
 		}
 	}
 
-
+	
 	
 }

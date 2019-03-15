@@ -14,31 +14,34 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.kafkademo.common.domain.Message;
+import com.kafkademo.simpleproducer.domain.ProducerMessage;
 
 @Configuration
 public class KafkaProducerConfig {
- 
-    @Value(value = "${kafka.bootstrapAddress}")
-    private String bootstrapAddress;
-    
-    @Bean
-    public ProducerFactory<String, Message> producerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(
-          ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, 
-          bootstrapAddress);
-        configProps.put(
-          ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, 
-          StringSerializer.class);
-        configProps.put(
-          ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, 
-          JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
-    }
- 
-    @Bean
-    public KafkaTemplate<String, Message> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
-    }
-       
+
+	@Value(value = "${kafka.bootstrapAddress}")
+	private String bootstrapAddress;
+
+	@Value(value = "${kafka.max.request.size.bytes:1000000}")
+	private Integer maxRequestSizeBytes;
+
+	@Value(value = "${kafka.acks:all}")
+	private String acks;
+
+	@Bean
+	public ProducerFactory<String, ProducerMessage> producerFactory() {
+		Map<String, Object> configProps = new HashMap<>();
+		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+		configProps.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSizeBytes);
+		configProps.put(ProducerConfig.ACKS_CONFIG, acks);
+		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		return new DefaultKafkaProducerFactory<>(configProps);
+	}
+
+	@Bean
+	public KafkaTemplate<String, ProducerMessage> kafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
+	}
+
 }

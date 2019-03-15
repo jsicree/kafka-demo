@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.kafkademo.common.domain.Message;
+import com.kafkademo.simpleconsumer.domain.ConsumerMessage;
 
 @Service
 public class ConsumerServiceImpl implements ConsumerService {
@@ -16,7 +16,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	}
 
 	@Override
-	public void processMessage(Message message) {
+	public void processMessage(ConsumerMessage message) {
 
 		log.info("Processing message: {}", message);
 	}

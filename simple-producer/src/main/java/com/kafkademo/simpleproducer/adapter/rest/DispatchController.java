@@ -31,7 +31,7 @@ public class DispatchController {
 		
 		log.info("In dispatch...");				
 		log.info("DispatchRequest = " + request);	
-		dispatcherService.processMessage(UUID.randomUUID().toString(), request.getSource(), request.getBody());
+		dispatcherService.processMessage(UUID.randomUUID().toString(), request.getSource(), request.getBody(), request.getNewField());
 
 	}
 }

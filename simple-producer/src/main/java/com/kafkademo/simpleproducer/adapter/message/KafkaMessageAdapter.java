@@ -11,6 +11,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.kafkademo.common.domain.Message;
+import com.kafkademo.simpleproducer.domain.ProducerMessage;
 import com.kafkademo.simpleproducer.port.MessagePort;
 
 @Component
@@ -22,21 +23,21 @@ public class KafkaMessageAdapter implements MessagePort {
 	private String topicName;
 
 	@Autowired
-	private KafkaTemplate<String, Message> kafkaTemplate;
+	private KafkaTemplate<String, ProducerMessage> kafkaTemplate;
 
 	public KafkaMessageAdapter() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void sendMessage(Message message) {
+	public void sendMessage(ProducerMessage message) {
 		log.info("Sending message: {}",message);
 		
-		ListenableFuture<SendResult<String, Message>> future = kafkaTemplate.send(topicName, message.getGuid(), message);
+		ListenableFuture<SendResult<String, ProducerMessage>> future = kafkaTemplate.send(topicName, message.getGuid(), message);
 
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Message>>() {
+		future.addCallback(new ListenableFutureCallback<SendResult<String, ProducerMessage>>() {
 
 			@Override
-			public void onSuccess(SendResult<String, Message> result) {
+			public void onSuccess(SendResult<String, ProducerMessage> result) {
 				log.info(
 						"Sent message=[" + message.getGuid() + "] with offset=[" + result.getRecordMetadata().offset() + "]");
 			}
