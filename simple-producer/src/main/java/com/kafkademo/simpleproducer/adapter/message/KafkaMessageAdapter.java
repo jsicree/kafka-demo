@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import com.kafkademo.common.domain.Message;
 import com.kafkademo.simpleproducer.domain.ProducerMessage;
 import com.kafkademo.simpleproducer.port.MessagePort;
 
@@ -50,9 +49,4 @@ public class KafkaMessageAdapter implements MessagePort {
 
 	}
 	
-	@Override
-	public void sendMessage(String guid, String key, String value) {
-		log.info("In sendMessage()");
-	}
-
 }

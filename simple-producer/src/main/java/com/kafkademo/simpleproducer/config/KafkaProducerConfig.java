@@ -13,7 +13,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.kafkademo.common.domain.Message;
+import com.kafkademo.simpleproducer.client.ProducerClient;
+import com.kafkademo.simpleproducer.client.ProducerClientImpl;
 import com.kafkademo.simpleproducer.domain.ProducerMessage;
 
 @Configuration
@@ -42,6 +43,11 @@ public class KafkaProducerConfig {
 	@Bean
 	public KafkaTemplate<String, ProducerMessage> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
+	}
+
+	@Bean
+	public ProducerClient<ProducerMessage> producerClient() {
+		return new ProducerClientImpl<>();
 	}
 
 }

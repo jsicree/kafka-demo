@@ -21,14 +21,14 @@ public class DispatcherServiceImpl implements DispatcherService {
 	@Override
 	public void processMessage(String guid, String source, String body, String newField) {
 		log.info("In processMessage()");
-//		ProducerMessage message = new ProducerMessage();
+		
 		ProducerMessage message = ProducerMessage.builder()
 				.withGuid(guid)
 				.withSource(source)
 				.withBody(body)
 				.withNewField(newField)
 				.build();
-		
+
 		messagePort.sendMessage(message);
 	}
 
