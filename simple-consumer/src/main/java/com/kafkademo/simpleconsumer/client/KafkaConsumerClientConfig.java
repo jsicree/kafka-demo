@@ -1,4 +1,4 @@
-package com.kafkademo.simpleconsumer.config;
+package com.kafkademo.simpleconsumer.client;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +16,12 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @EnableKafka
 @Configuration
-public class KafkaConsumerConfig {
+public class KafkaConsumerClientConfig {
 
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    @Value(value = "${kafka.groupId}")
+    @Value(value = "${kafka.group.id}")
     private String groupId;
 
 	@Bean

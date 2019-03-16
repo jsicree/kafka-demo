@@ -1,6 +1,5 @@
 package com.kafkademo.simpleproducer.adapter.message;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.kafkademo.simpleproducer.client.ProducerClient;
@@ -8,7 +7,6 @@ import com.kafkademo.simpleproducer.domain.ProducerMessage;
 import com.kafkademo.simpleproducer.port.MessagePort;
 
 @Component
-@Primary
 public class ProducerClientMessageAdapter implements MessagePort {
 
 	private ProducerClient<ProducerMessage> producerClient;

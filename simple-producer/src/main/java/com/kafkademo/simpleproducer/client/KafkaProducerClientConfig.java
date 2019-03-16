@@ -1,4 +1,4 @@
-package com.kafkademo.simpleproducer.config;
+package com.kafkademo.simpleproducer.client;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,41 +13,61 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.kafkademo.simpleproducer.client.ProducerClient;
-import com.kafkademo.simpleproducer.client.ProducerClientImpl;
-import com.kafkademo.simpleproducer.domain.ProducerMessage;
-
 @Configuration
-public class KafkaProducerConfig {
+public class KafkaProducerClientConfig {
 
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
-	@Value(value = "${kafka.max.request.size.bytes:1000000}")
+	@Value(value = "${kafka.max.request.size.bytes:0}")
 	private Integer maxRequestSizeBytes;
 
-	@Value(value = "${kafka.acks:all}")
+	@Value(value = "${kafka.acks:}")
 	private String acks;
 
+	@Value(value = "${kafka.linger.ms:0}")
+	private Integer lingerMs;
+
+	@Value(value = "${kafka.batch.size:0}")
+	private Integer batchSize;
+
+	@Value(value = "${kafka.retries:0}")
+	private Integer retries;
+
+	@Value(value = "${kafka.retry.backoff.ms:0}")
+	private Integer retryBackoffMs;
+	
+	@Value(value = "${kafka.compression.type:}")
+	private String compressionType;
+
 	@Bean
-	public ProducerFactory<String, ProducerMessage> producerFactory() {
+	public ProducerFactory<String, Envelope> producerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+		if (maxRequestSizeBytes > 0)
 		configProps.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSizeBytes);
-		configProps.put(ProducerConfig.ACKS_CONFIG, acks);
+		if (!acks.isEmpty())
+			configProps.put(ProducerConfig.ACKS_CONFIG, acks);
+		if (lingerMs > 0)
+			configProps.put(ProducerConfig.LINGER_MS_CONFIG, lingerMs);
+		if (batchSize > 0)
+			configProps.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
+		if (retries > 0)
+			configProps.put(ProducerConfig.RETRIES_CONFIG, retries);
+		if (retryBackoffMs > 0)
+			configProps.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, retryBackoffMs);
+		if (!compressionType.isEmpty())
+			configProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType);
+			
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, ProducerMessage> kafkaTemplate() {
+	public KafkaTemplate<String, Envelope> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 
-	@Bean
-	public ProducerClient<ProducerMessage> producerClient() {
-		return new ProducerClientImpl<>();
-	}
 
 }
