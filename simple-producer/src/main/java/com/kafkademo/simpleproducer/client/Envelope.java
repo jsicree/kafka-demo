@@ -10,6 +10,7 @@ public class Envelope implements Serializable {
 	 */
 	private static final long serialVersionUID = -1496070996949590441L;
 	private String guid;
+	private String batchId;
 	private Long timestamp;
 	private OperationType opType;
 	private Long payloadId;
@@ -18,6 +19,7 @@ public class Envelope implements Serializable {
 	@Generated("SparkTools")
 	private Envelope(Builder builder) {
 		this.guid = builder.guid;
+		this.batchId = builder.batchId;
 		this.timestamp = builder.timestamp;
 		this.opType = builder.opType;
 		this.payloadId = builder.payloadId;
@@ -36,6 +38,14 @@ public class Envelope implements Serializable {
 		this.guid = guid;
 	}
 
+	public String getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
+	
 	public Long getTimestamp() {
 		return timestamp;
 	}
@@ -73,6 +83,7 @@ public class Envelope implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((guid == null) ? 0 : guid.hashCode());
+		result = prime * result + ((batchId == null) ? 0 : batchId.hashCode());
 		result = prime * result + ((opType == null) ? 0 : opType.hashCode());
 		result = prime * result + ((payload == null) ? 0 : payload.hashCode());
 		result = prime * result + ((payloadId == null) ? 0 : payloadId.hashCode());
@@ -93,6 +104,11 @@ public class Envelope implements Serializable {
 			if (other.guid != null)
 				return false;
 		} else if (!guid.equals(other.guid))
+			return false;
+		if (batchId == null) {
+			if (other.batchId != null)
+				return false;
+		} else if (!batchId.equals(other.batchId))
 			return false;
 		if (opType != other.opType)
 			return false;
@@ -119,6 +135,8 @@ public class Envelope implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Envelope [guid=");
 		builder.append(guid);
+		builder.append(", batchId=");
+		builder.append(batchId);
 		builder.append(", timestamp=");
 		builder.append(timestamp);
 		builder.append(", opType=");
@@ -146,6 +164,7 @@ public class Envelope implements Serializable {
 	@Generated("SparkTools")
 	public static final class Builder {
 		private String guid;
+		private String batchId;
 		private Long timestamp;
 		private OperationType opType = OperationType.DEFAULT;
 		private Long payloadId;
@@ -159,6 +178,11 @@ public class Envelope implements Serializable {
 			return this;
 		}
 
+		public Builder withBatchId(String batchId) {
+			this.batchId = batchId;
+			return this;
+		}
+		
 		public Builder withTimestamp(Long timestamp) {
 			this.timestamp = timestamp;
 			return this;

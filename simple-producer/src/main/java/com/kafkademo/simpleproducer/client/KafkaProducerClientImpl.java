@@ -29,45 +29,112 @@ public class KafkaProducerClientImpl<T> implements ProducerClient<T> {
 
 	@Override
 	public void send(T value) {
-		log.info("In send for value {}", value);
+		log.info("In send(value) for value {}", value);
 		log.info("Type of value: {}", value.getClass().getName());
-
-		log.info("Topic: {}", topicName);
 
 		try {
 			String payload = (new ObjectMapper()).writeValueAsString(value);
-			Envelope envelope = Envelope.builder()
-					.withGuid(UUID.randomUUID().toString())
-					.withTimestamp(System.currentTimeMillis())
-					.withPayload(payload)
-					.build();
-			log.info("Envelope: {}", envelope);
-			ListenableFuture<SendResult<String, Envelope>> future = kafkaTemplate.send(topicName,
-					envelope.getTimestamp().toString(), envelope);
-
-			future.addCallback(new ListenableFutureCallback<SendResult<String, Envelope>>() {
-
-				@Override
-				public void onSuccess(SendResult<String, Envelope> result) {
-					log.info("Sent message envelopeTS | topic | partition | offset | keySize | valueSize: {} | {} | {} | {} | {} | {}", 							
-							envelope.getGuid(),
-							result.getRecordMetadata().topic(),
-							result.getRecordMetadata().partition(),
-							result.getRecordMetadata().offset(),
-							result.getRecordMetadata().serializedKeySize(),
-							result.getRecordMetadata().serializedValueSize()							
-							);
-				}
-
-				@Override
-				public void onFailure(Throwable ex) {
-					log.info("Unable to send message due to exception: {}", ex);
-				}
-			});
+			sendEnvelope(UUID.randomUUID().toString(), null, OperationType.DEFAULT, null, payload);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void send(String guid, T value) {
+		log.info("In send(guid, value) for value {}", value);
+		log.info("Type of value: {}", value.getClass().getName());
+
+		try {
+			String payload = (new ObjectMapper()).writeValueAsString(value);
+			sendEnvelope(guid, null, OperationType.DEFAULT, null, payload);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void send(String guid, OperationType opType, T value) {
+		log.info("In send(guid, opType, value) for value {}", value);
+		log.info("Type of value: {}", value.getClass().getName());
+
+		try {
+			String payload = (new ObjectMapper()).writeValueAsString(value);
+			sendEnvelope(guid, null, opType, null, payload);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void sendDelete(String guid, Long id) {
+		log.info("In sendDelete(guid, id) for id {}", id);
+
+		sendEnvelope(guid, null, OperationType.DELETE, id, null);
+
+	}
+
+	@Override
+	public void sendStartBatch(String guid, String batchId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void send(String guid, String batchId, OperationType opType, T value) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void send(String guid, String batchId, T value) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void sendDelete(String guid, String batchId, Long id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void sendEndBatch(String guid, String batchId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void sendEnvelope(String guid, String batchId, OperationType opType, Long payloadId, String payload) {
+		log.info("In sendEnvelope envelope.");
+
+		log.info("Topic: {}", topicName);
+
+		Envelope envelope = Envelope.builder().withTimestamp(System.currentTimeMillis()).withGuid(guid)
+				.withBatchId(batchId).withOpType(opType).withPayloadId(payloadId).withPayload(payload).build();
+
+		ListenableFuture<SendResult<String, Envelope>> future = kafkaTemplate.send(topicName,
+				envelope.getTimestamp().toString(), envelope);
+
+		future.addCallback(new ListenableFutureCallback<SendResult<String, Envelope>>() {
+
+			@Override
+			public void onSuccess(SendResult<String, Envelope> result) {
+				log.info(
+						"Sent envelope: timestamp | topic | partition | offset | keySize | valueSize: {} | {} | {} | {} | {} | {}",
+						result.getRecordMetadata().timestamp(), result.getRecordMetadata().topic(),
+						result.getRecordMetadata().partition(), result.getRecordMetadata().offset(),
+						result.getRecordMetadata().serializedKeySize(),
+						result.getRecordMetadata().serializedValueSize());
+			}
+
+			@Override
+			public void onFailure(Throwable ex) {
+				log.info("Unable to send message due to exception: {}", ex);
+			}
+		});
 	}
 
 }
