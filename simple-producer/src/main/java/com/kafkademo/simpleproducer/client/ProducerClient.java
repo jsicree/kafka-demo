@@ -17,7 +17,7 @@ public interface ProducerClient<T> {
 	 * @param guid
 	 * @param value
 	 */
-	public void send(String guid, T value);
+//	public void send(String guid, T value);
 
 	/**
 	 * Send an object with the specified guid and OperationType.
@@ -26,7 +26,7 @@ public interface ProducerClient<T> {
 	 * @param opType
 	 * @param value
 	 */
-	public void send(String guid, OperationType opType, T value);
+//	public void send(String guid, OperationType opType, T value);
 
 	/**
 	 * Send a delete message with the specified object id, guid and an OperationType
@@ -35,18 +35,18 @@ public interface ProducerClient<T> {
 	 * @param guid
 	 * @param id
 	 */
-	public void sendDelete(String guid, Long id);
+//	public void sendDelete(String guid, Long id);
 
 	// Batch related operations
 
-	public void sendStartBatch(String guid, String batchId);
+//	public void sendStartBatch(String guid, String batchId);
 
-	public void send(String guid, String batchId, OperationType opType, T value);
+//	public void send(String guid, String batchId, OperationType opType, T value);
 
-	public void send(String guid, String batchId, T value);
+//	public void send(String guid, String batchId, T value);
 
-	public void sendDelete(String guid, String batchId, Long id);
+//	public void sendDelete(String guid, String batchId, Long id);
 
-	public void sendEndBatch(String guid, String batchId);
+//	public void sendEndBatch(String guid, String batchId);
 
 }

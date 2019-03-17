@@ -44,7 +44,10 @@ public class KafkaEnvelopeListenerAdapter {
 				offset, key);
 		try {
 			Envelope envelope = (new ObjectMapper()).readValue(envelopeAsString, Envelope.class);
-			service.processEnvelope(envelope);
+//			log.info("Type of payload in TypedEnvelope from topic: {}", envelope.getPayload().getClass());
+			log.info("Envelope from topic: {}", envelope);
+			
+//			service.processEnvelope(envelope);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +56,9 @@ public class KafkaEnvelopeListenerAdapter {
 		latch.countDown();
 	}
 
-	
+// ***************************
+// Attempt to read batch
+// ***************************	
 //	@KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.group.id}", containerFactory = "kafkaListenerContainerFactory")
 //	public void listenForEnvelopes(@Payload List<String> envelopeAsStringList) {
 //

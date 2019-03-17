@@ -13,6 +13,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.kafkademo.simpleproducer.domain.ProducerMessage;
+
 @Configuration
 public class KafkaProducerClientConfig {
 
@@ -36,7 +38,7 @@ public class KafkaProducerClientConfig {
 
 	@Value(value = "${kafka.retry.backoff.ms:0}")
 	private Integer retryBackoffMs;
-	
+
 	@Value(value = "${kafka.compression.type:}")
 	private String compressionType;
 
@@ -45,7 +47,7 @@ public class KafkaProducerClientConfig {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		if (maxRequestSizeBytes > 0)
-		configProps.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSizeBytes);
+			configProps.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSizeBytes);
 		if (!acks.isEmpty())
 			configProps.put(ProducerConfig.ACKS_CONFIG, acks);
 		if (lingerMs > 0)
@@ -58,7 +60,7 @@ public class KafkaProducerClientConfig {
 			configProps.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, retryBackoffMs);
 		if (!compressionType.isEmpty())
 			configProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType);
-			
+
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 		return new DefaultKafkaProducerFactory<>(configProps);
@@ -69,5 +71,40 @@ public class KafkaProducerClientConfig {
 		return new KafkaTemplate<>(producerFactory());
 	}
 
+	// ******************************************
+	// Attempt to use a typed Envelope. Might
+	// return to this at a later date.
+	// ******************************************
+
+	// @Bean
+	// public ProducerFactory<String, TypedEnvelope<?>> typedProducerFactory() {
+	// Map<String, Object> configProps = new HashMap<>();
+	// configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+	// if (maxRequestSizeBytes > 0)
+	// configProps.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSizeBytes);
+	// if (!acks.isEmpty())
+	// configProps.put(ProducerConfig.ACKS_CONFIG, acks);
+	// if (lingerMs > 0)
+	// configProps.put(ProducerConfig.LINGER_MS_CONFIG, lingerMs);
+	// if (batchSize > 0)
+	// configProps.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
+	// if (retries > 0)
+	// configProps.put(ProducerConfig.RETRIES_CONFIG, retries);
+	// if (retryBackoffMs > 0)
+	// configProps.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, retryBackoffMs);
+	// if (!compressionType.isEmpty())
+	// configProps.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType);
+	//
+	// configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+	// StringSerializer.class);
+	// configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+	// JsonSerializer.class);
+	// return new DefaultKafkaProducerFactory<>(configProps);
+	// }
+	//
+	// @Bean
+	// public KafkaTemplate<String, TypedEnvelope<?>> typedKafkaTemplate() {
+	// return new KafkaTemplate<String, TypedEnvelope<?>>(typedProducerFactory());
+	// }
 
 }
