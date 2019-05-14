@@ -1,0 +1,24 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:tns="http://common.kafkademo.com/domain" targetNamespace="http://common.kafkademo.com/domain"
+	elementFormDefault="qualified" jaxb:version="2.0">
+
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:globalBindings>
+				<jaxb:javaType name="java.util.Calendar" xmlType="xs:date"
+					parseMethod="javax.xml.bind.DatatypeConverter.parseDate"
+					printMethod="javax.xml.bind.DatatypeConverter.printDate" />
+			</jaxb:globalBindings>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<xs:complexType name="Message">
+		<xs:sequence>
+			<xs:element name="guid" type="xs:string" />
+			<xs:element name="source" type="xs:string" />
+			<xs:element name="body" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

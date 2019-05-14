@@ -18,7 +18,7 @@ public class KafkaProducerClientImpl<T> implements ProducerClient<T> {
 
 	protected final static Logger log = LoggerFactory.getLogger(KafkaProducerClientImpl.class);
 
-	@Value(value = "${kafka.topic.name}")
+//	@Value(value = "${kafka.topic.name}")
 	private String topicName;
 
 	@Autowired
@@ -27,7 +27,8 @@ public class KafkaProducerClientImpl<T> implements ProducerClient<T> {
 	// @Autowired
 	// private KafkaTemplate<String, TypedEnvelope<?>> typedKafkaTemplate;
 
-	public KafkaProducerClientImpl() {
+	public KafkaProducerClientImpl(String topicName) {
+		this.topicName = topicName;
 	}
 
 	@Override
