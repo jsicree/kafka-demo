@@ -33,7 +33,7 @@ public class JobListener {
 		this.service = service;
 	}
 
-	@KafkaListener(id = "job-listener", topics = "${kafka.job.topic.name}", groupId = "${kafka.job.group.id}", autoStartup = "false", containerFactory = "kafkaJobListenerContainerFactory", concurrency = "2")
+	@KafkaListener(id = "job-listener", topics = "${kafka.job.topic.name}", groupId = "${kafka.job.group.id}", autoStartup = "false", containerFactory = "kafkaJobListenerContainerFactory", concurrency = "${kafka.job.concurrency}")
 	public void listenForJobs(List<Message<String>> records, Acknowledgment ack) {
 		log.info("In listenForJobs: # messages = {}", records.size());
 		
@@ -42,6 +42,7 @@ public class JobListener {
 				try {
 					JobMessage jobMessage = mapper.readValue(message.getPayload(), JobMessage.class);
 					log.info("Message read from topic: {}",jobMessage);
+					service.process(jobMessage);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -39,7 +39,7 @@ public class DataListener {
 		this.service = service;
 	}
 
-	@KafkaListener(id = "data-listener", topics = "${kafka.data.topic.name}", groupId = "${kafka.data.group.id}", containerFactory = "kafkaListenerContainerFactory", concurrency = "2")
+	@KafkaListener(id = "data-listener", topics = "${kafka.data.topic.name}", groupId = "${kafka.data.group.id}", containerFactory = "kafkaListenerContainerFactory", concurrency = "${kafka.data.concurrency}")
 	public void listenForData(List<Message<String>> records, Acknowledgment ack) {
 		log.info("In listenForData: # messages = {}", records.size());
 
@@ -48,6 +48,7 @@ public class DataListener {
 				try {
 					DataMessage dataMessage = mapper.readValue(message.getPayload(), DataMessage.class);
 					log.info("Message read from topic: {}",dataMessage);
+					service.process(dataMessage);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
