@@ -1,6 +1,11 @@
 # kafka-demo
 A simple producer / consumer demo using Kafka and Spring-Kafka. The producer (simple-dispatcher) is a Spring Boot REST service. Calling the `/dispatch` endpoint with a valid REST request will send a message to a kafka topic. The consumer (simple-consumer) will take the message off the topic and print it's contents to the log.
 
+## Simple Producer / Consumer
+
+## Producer Client, Data Refresh Example
+
+
 ### Sample Request
 A sample REST request.  
 
